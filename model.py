@@ -111,7 +111,7 @@ def classifier(vec_feat, nclasses):
 	cl = tf.layers.dense(cl, nclasses, activation=None)
 	return cl
 
-def getPrediction(x_cnn_1, x_cnn_2, nunits, nclasses, dropout, is_training):
+def getPrediction(x_cnn_1, x_cnn_2, nclasses, dropout, is_training):
 	features_learnt = None
 	prediction = None
 
@@ -168,7 +168,6 @@ def data_augmentation( label_train, vhsr_train_1, vhsr_train_2 ):
 	return np.array(new_label_train), np.array(new_vhsr_train_1), np.array(new_vhsr_train_2)
 
 #Model parameters
-nunits = 256
 batchsz = 64
 hm_epochs = 250
 n_levels_lstm = 1
@@ -216,7 +215,7 @@ dropout = tf.placeholder(tf.float32, shape=(), name="drop_rate")
 sess = tf.InteractiveSession()
 
 
-pred_full, features_learnt = getPrediction(x_cnn_1, x_cnn_2, nunits, nclasses, dropout, is_training)
+pred_full, features_learnt = getPrediction(x_cnn_1, x_cnn_2, nclasses, dropout, is_training)
 pred_tot = pred_full
 testPrediction = tf.argmax(pred_tot, 1, name="prediction")
 cost = tf.reduce_mean( tf.nn.softmax_cross_entropy_with_logits(labels=y,logits=pred_full)  )
